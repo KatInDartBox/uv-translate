@@ -1,0 +1,7 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../widgets/translate",
+  "lib": {
+    "entryFile": "src/public_api.ts"
+  }
+}
