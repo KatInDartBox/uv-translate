@@ -1,24 +1,86 @@
-# Weather
+# switch between language
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.0.
+make your site available in different language
+for your angular 7+ app
 
-## Code scaffolding
+## npm i uv-translate
 
-Run `ng generate component component-name --project weather` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project weather`.
-> Note: Don't forget to add `--project weather` or else it will be added to the default project in your `angular.json` file. 
+## usage
 
-## Build
+### first import langService to your app.module.translate
 
-Run `ng build weather` to build the project. The build artifacts will be stored in the `dist/` directory.
+    import { LangService } from "uv-translate";
+    @NgModule({
+        declarations: [AppComponent],
+        imports: [...your modules],
+        bootstrap: [AppComponent],
+        providers: [LangService],
+        entryComponents: []
+    })
 
-## Publishing
+### in your app.component.ts first set your default language
 
-After building your library with `ng build weather`, go to the dist folder `cd dist/weather` and run `npm publish`.
+    constructor(private langService: LangService) {}
+    ngOnInit() {
+        this.langService.setDefaultLang("assets/i18n/en.json").then(() => {
+            this.loadSpinner = false;
+        });
+    }
 
-## Running unit tests
+### import TranslatePipeModule to a module where you want to translate
 
-Run `ng test weather` to execute the unit tests via [Karma](https://karma-runner.github.io).
+    import { TranslatePipeModule } from "uv-translate";
+    @NgModule({
+        declarations: [iComponents],
+        imports: [CommonModule, RouterModule.forChild(routes), iModules]
+    })
 
-## Further help
+### now you can translate anywhere in your component template
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+    <span>{{'title' | translate: 'app'}}</span>
+
+### change language and don't forget to reload your browser
+
+    setLang(value) {
+        const lang = `assets/i18n/${value}.json`;
+        this.langService.changeLang(lang).then(() => {
+            this.loadSpinner = false;
+            location.reload();
+        });
+    }
+
+### language json file should be in 'assets/i18n/en.json' folder
+
+    {
+        "app": {
+            "title": "Translator"
+        },
+        "expense": {
+            "title": "Expense",
+            "mr": "Mr.",
+            "mrs": "Mrs.",
+        },
+        "receive": {
+            "title": "Income",
+            "mr": "Mr.",
+            "mrs": "Mrs.",
+        }
+    }
+
+### other language 'assets/i18n/fr.json' folder
+
+    {
+        "app": {
+            "title": "Traducteur"
+        },
+        "expense": {
+            "title": "Frais",
+            "mr": "Mr.",
+            "mrs": "Mrs.",
+        },
+        "receive": {
+            "title": "le revenu",
+            "mr": "Mr.",
+            "mrs": "Mrs.",
+        }
+    }
